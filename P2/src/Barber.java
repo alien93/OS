@@ -2,7 +2,10 @@
  * This class implements the barber's part of the
  * Barbershop thread synchronization example.
  */
-public class Barber {
+public class Barber extends Thread{
+	
+	private boolean runs;
+	
 	/**
 	 * Creates a new barber.
 	 * @param queue		The customer queue.
@@ -10,21 +13,22 @@ public class Barber {
 	 * @param pos		The position of this barber's chair
 	 */
 	public Barber(CustomerQueue queue, Gui gui, int pos) { 
-		// Incomplete
+		
 	}
 
 	/**
 	 * Starts the barber running as a separate thread.
 	 */
 	public void startThread() {
-		// Incomplete
+		this.runs=true;
+		this.start();
 	}
-
+	
 	/**
 	 * Stops the barber thread.
 	 */
 	public void stopThread() {
-		// Incomplete
+		this.runs=false;
 	}
 
 	// Add more methods as needed
