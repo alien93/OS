@@ -8,10 +8,7 @@ public class Barber implements Runnable {
     private CustomerQueue queue;
     private Gui gui;
     private int pos;
-<<<<<<< HEAD
     private boolean runs;
-=======
->>>>>>> master
 
 	/**
 	 * Creates a new barber.
@@ -20,10 +17,7 @@ public class Barber implements Runnable {
 	 * @param pos		The position of this barber's chair
 	 */
 	public Barber(CustomerQueue queue, Gui gui, int pos) {
-<<<<<<< HEAD
-    	
-=======
->>>>>>> master
+
         this.queue = queue;
         this.gui = gui;
         this.pos = pos;
@@ -34,10 +28,8 @@ public class Barber implements Runnable {
 	 */
 	public void startThread() {
 		barberThread = new Thread(this);
-<<<<<<< HEAD
 		this.runs = true;
-=======
->>>>>>> master
+
         barberThread.start();
 	}
 	
@@ -50,8 +42,7 @@ public class Barber implements Runnable {
 
     @Override
     public void run() {
-<<<<<<< HEAD
-    	
+
     	while(this.runs){
     		//fetch the next customer from the queue    		
     		Customer customer = this.queue.getNextCustomer();
@@ -83,12 +74,7 @@ public class Barber implements Runnable {
     			
     		}
     	}
-    	
-=======
-        // Shit the thread should do
->>>>>>> master
     }
 
-    // Add more methods as needed
 }
 
