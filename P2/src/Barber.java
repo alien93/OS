@@ -2,38 +2,43 @@
  * This class implements the barber's part of the
  * Barbershop thread synchronization example.
  */
-public class Barber extends Thread{
-	
-	private boolean runs;
-	
+public class Barber implements Runnable {
+
+    private Thread barberThread;
+    private CustomerQueue queue;
+    private Gui gui;
+    private int pos;
+
 	/**
 	 * Creates a new barber.
 	 * @param queue		The customer queue.
 	 * @param gui		The GUI.
 	 * @param pos		The position of this barber's chair
 	 */
-	public Barber(CustomerQueue queue, Gui gui, int pos) { 
-		
+	public Barber(CustomerQueue queue, Gui gui, int pos) {
+        this.queue = queue;
+        this.gui = gui;
+        this.pos = pos;
 	}
 
 	/**
 	 * Starts the barber running as a separate thread.
 	 */
 	public void startThread() {
-		this.runs=true;
-		this.start();
+		barberThread = new Thread(this);
+        barberThread.start();
 	}
 	
 	/**
 	 * Stops the barber thread.
 	 */
 	public void stopThread() {
-		this.runs=false;
+		barberThread.interrupt();
 	}
 
     @Override
     public void run() {
-        super.run();
+        // Shit the thread should do
     }
 
     // Add more methods as needed
