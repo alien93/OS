@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  * This class implements a queue of customers as a circular buffer.
  */
@@ -7,9 +9,19 @@ public class CustomerQueue {
 	 * @param queueLength	The maximum length of the queue.
 	 * @param gui			A reference to the GUI interface.
 	 */
+	
+	private LinkedList<Customer> customerQueue;
+    private Gui gui;
+	
     public CustomerQueue(int queueLength, Gui gui) {
-		// Incomplete
+        this.gui = gui;
 	}
+    
+//    Just had to make this for the barberclass
+//    TODO: implement methods for checking if it is a customer, wait if there is no new customers ect. 
+    public Customer getNextCustomer(){
+    	return customerQueue.getLast();
+    }
 
 	// Add more methods as needed
 
@@ -22,10 +34,10 @@ public class CustomerQueue {
                 if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
             }
         }
-        queue.put(new Customer());
+        customerQueue.add(new Customer());
     }
 
     public boolean full() {
-        return queue.size() >= Constants.NOF_CHAIRS;
+        return customerQueue.size() >= Constants.NOF_CHAIRS;
     }
 }
