@@ -31,5 +31,11 @@ public class Doorman extends Thread{
 		this.runs=false;
 	}
 
-	// Add more methods as needed
+    @Override
+    public void run() {
+        super.run();
+    }
+
+
+    // Add more methods as needed
 }
