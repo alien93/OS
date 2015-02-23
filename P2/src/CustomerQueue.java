@@ -12,4 +12,20 @@ public class CustomerQueue {
 	}
 
 	// Add more methods as needed
+
+    public synchronized void putNewCustomer() throws InterruptedException{
+        while (full()) {
+            try {
+                gui.println("Doorman is waiting for free chairs");
+                wait();
+            } catch (InterruptedException e) {
+                if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
+            }
+        }
+        queue.put(new Customer());
+    }
+
+    public boolean full() {
+        return queue.size() >= Constants.NOF_CHAIRS;
+    }
 }

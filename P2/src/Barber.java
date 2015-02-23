@@ -25,7 +25,7 @@ public class Barber implements Runnable {
 	 * Starts the barber running as a separate thread.
 	 */
 	public void startThread() {
-		barberThread = new Thread(this);
+		barberThread = new Thread(this, "Barber #" + pos);
         barberThread.start();
 	}
 	
