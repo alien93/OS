@@ -87,7 +87,7 @@ public class BarbershopGui extends JFrame implements Constants, Gui, ChangeListe
 	 * @return			The image that was loaded, as an Image object.
 	 */
 	private Image loadImage(Toolkit tk, String file, MediaTracker tracker) {
-		Image result = tk.createImage(file);
+        Image result = tk.createImage("P2/src/" + file);
 		tracker.addImage(result, 0);
 		return result;
 	}
