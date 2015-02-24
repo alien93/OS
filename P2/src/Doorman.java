@@ -22,7 +22,7 @@ public class Doorman implements Runnable {
 	 * Starts the doorman running as a separate thread.
 	 */
 	public void startThread() {
-		doormanThread = new Thread(this, "Doorman");
+		doormanThread = new Thread(this);
         doormanThread.start();
 	}
 
@@ -39,12 +39,13 @@ public class Doorman implements Runnable {
         // Infinite loop until interrupt
         while (true) {
             try {
+                // Doorman sleeps
                 Thread.sleep(Globals.doormanSleep);
 
                 queue.putNewCustomer();
 
             } catch (InterruptedException e) {
-                if (Thread.interrupted()) return;
+                return;
             }
         }
 

@@ -8,7 +8,6 @@ public class Barber implements Runnable {
     private CustomerQueue queue;
     private Gui gui;
     private int pos;
-    private boolean runs;
 
 	/**
 	 * Creates a new barber.
@@ -27,7 +26,7 @@ public class Barber implements Runnable {
 	 * Starts the barber running as a separate thread.
 	 */
 	public void startThread() {
-		barberThread = new Thread(this, "Barber #" + pos);
+		barberThread = new Thread(this);
         barberThread.start();
 	}
 	
@@ -40,8 +39,8 @@ public class Barber implements Runnable {
 
     @Override
     public void run() {
-
-    	while(this.runs){
+        // TODO: return from run on interrupt
+    	while(true){
     		//fetch the next customer from the queue    		
     		Customer customer = this.queue.getNextCustomer();
     		this.gui.fillBarberChair(pos, customer);
