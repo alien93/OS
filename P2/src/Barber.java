@@ -21,6 +21,7 @@ public class Barber implements Runnable {
         this.queue = queue;
         this.gui = gui;
         this.pos = pos;
+        this.runs = false;
 	}
 
 	/**
@@ -47,31 +48,29 @@ public class Barber implements Runnable {
     		//fetch the next customer from the queue    		
     		Customer customer = this.queue.getNextCustomer();
     		this.gui.fillBarberChair(pos, customer);
-    		this.gui.println("Barber " + this.pos + " is working");
-    		
+
     		//thread sleeps through the time it takes to cut the hair
     		try{
-    			// TODO: how to make do it with the barberThread
-    			Thread.sleep(Globals.barberWork);
+    			// TODO: fix warning
+    		 	barberThread.sleep(Globals.barberWork);
     		}catch(Exception e){
-    			
+                System.out.print("");
     		}
     		
     		//finish cutting
     		this.gui.emptyBarberChair(pos);
-    		this.gui.println(this.pos + " is now free");
-    		
+
     		//the barber is tired, have to sleep zzz...
     		try{
     			this.gui.barberIsSleeping(pos);
-    			// TODO: how to do it with the barberThread
-    			Thread.sleep((long) (Globals.barberSleep*Math.random()));
+    			// TODO: fix warning
+    			barberThread.sleep((long) (Globals.barberSleep * Math.random()));
     			
     		//after sleeping for a random time, the barber wakes up
     			this.gui.barberIsAwake(pos);
     			
     		}catch(Exception e){
-    			
+                System.out.print("");
     		}
     	}
     }

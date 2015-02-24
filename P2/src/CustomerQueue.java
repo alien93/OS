@@ -21,5 +21,10 @@ public class CustomerQueue {
     	return customerQueue.getLast();
     }
 
-	// Add more methods as needed
+//    Just had to make this for the doormanclass
+//    TODO: implement methods for adding a customer to the queue, check if there is space ect.
+    public boolean addCustomer(Customer customer){
+        return customerQueue.add(customer);
+    }
+
 }
