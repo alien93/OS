@@ -50,7 +50,7 @@ public class Barber implements Runnable {
     		try{
     			// TODO: how to make do it with the barberThread
     			Thread.sleep(Globals.barberWork);
-    		}catch(Exception e){
+    		}catch(InterruptedException e){
     			
     		}
     		
@@ -67,7 +67,7 @@ public class Barber implements Runnable {
     		//after sleeping for a random time, the barber wakes up
     			this.gui.barberIsAwake(pos);
     			
-    		}catch(Exception e){
+    		}catch(InterruptedException e){
     			
     		}
     	}
