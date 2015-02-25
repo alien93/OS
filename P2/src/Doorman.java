@@ -36,9 +36,19 @@ public class Doorman implements Runnable {
 
     @Override
     public void run() {
-        // Shit the thread should do
+        // Infinite loop until interrupt
+        while (true) {
+            try {
+                // Doorman sleeps
+                Thread.sleep(Globals.doormanSleep);
+
+                queue.putNewCustomer();
+
+            } catch (InterruptedException e) {
+                return;
+            }
+        }
+
     }
 
-
-    // Add more methods as needed
 }

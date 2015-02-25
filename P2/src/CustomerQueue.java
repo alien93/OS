@@ -11,15 +11,37 @@ public class CustomerQueue {
 	 */
 	
 	private LinkedList<Customer> customerQueue;
+    int queueLength;
+    private Gui gui;
 	
     public CustomerQueue(int queueLength, Gui gui) {
+        this.customerQueue = new LinkedList<Customer>();
+        this.gui = gui;
+        this.queueLength = queueLength;
 	}
     
-//    Just had to make this for the barberclass
-//    TODO: implement methods for checking if it is a customer, wait if there is no new customers ect. 
     public Customer getNextCustomer(){
     	return customerQueue.getLast();
     }
 
 	// Add more methods as needed
+
+    public synchronized void putNewCustomer() throws InterruptedException {
+        while (full()) {
+            gui.println("Doorman is waiting for free chairs");
+            wait();
+        }
+
+        Customer next = new Customer();
+        customerQueue.add(next);
+        gui.fillLoungeChair(next.getCustomerID() % queueLength, next);
+    }
+
+    public boolean full() {
+        return customerQueue.size() >= queueLength;
+    }
+
+    public boolean empty() {
+        return customerQueue.size() == 0;
+    }
 }
