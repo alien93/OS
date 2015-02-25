@@ -29,7 +29,7 @@ public class CustomerQueue {
 
             }
         }
-        Customer c = customerQueue.getLast();
+        Customer c = customerQueue.pop();
         //return customerQueue.getLast();
         for (int i = 0; i < chairs.length; i++){
             if (chairs[i] == c.getCustomerID()) {
