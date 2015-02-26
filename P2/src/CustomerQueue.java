@@ -21,28 +21,19 @@ public class CustomerQueue {
         this.queueLength = queueLength;
 	}
     
-    public synchronized Customer getNextCustomer(){
+    public synchronized Customer getNextCustomer() throws InterruptedException {
         while (empty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
+            gui.println("Barber is waiting for new customer");
+            wait();
+            gui.println("Barber is notified of new customer");
+        }
 
-            }
-        }
-        Customer c = customerQueue.pop();
-        //return customerQueue.getLast();
-        for (int i = 0; i < chairs.length; i++){
-            if (chairs[i] == c.getCustomerID()) {
-                chairs[i] = 0;
-                gui.emptyLoungeChair(i);
-            }
-            break;
-        }
+        Customer next = customerQueue.pop();
+        gui.emptyLoungeChair(next.getCustomerID() % queueLength);
         notify();
-        return c;
-    }
 
-	// Add more methods as needed
+        return next;
+    }
 
     public synchronized void putNewCustomer() throws InterruptedException {
         while (full()) {
@@ -51,9 +42,9 @@ public class CustomerQueue {
             gui.println("Doorman is notified of free chairs");
         }
 
-        Customer next = new Customer();
-        customerQueue.add(next);
-        gui.fillLoungeChair(next.getCustomerID() % queueLength, next);
+        Customer newCustomer = new Customer();
+        customerQueue.add(newCustomer);
+        gui.fillLoungeChair(newCustomer.getCustomerID() % queueLength, newCustomer);
         notify();
     }
 
