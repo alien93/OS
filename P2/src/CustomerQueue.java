@@ -13,6 +13,7 @@ public class CustomerQueue {
 	private LinkedList<Customer> customerQueue;
     int queueLength;
     private Gui gui;
+    private int[] chairs;
 	
     public CustomerQueue(int queueLength, Gui gui) {
         this.customerQueue = new LinkedList<Customer>();
@@ -20,22 +21,33 @@ public class CustomerQueue {
         this.queueLength = queueLength;
 	}
     
-    public Customer getNextCustomer(){
-    	return customerQueue.getLast();
-    }
+    public synchronized Customer getNextCustomer() throws InterruptedException {
+        while (empty()) {
+            gui.println("Barber is waiting for new customer");
+            wait();
+            gui.println("Barber is notified of new customer");
+        }
 
-	// Add more methods as needed
+        Customer next = customerQueue.pop();
+        gui.emptyLoungeChair(next.getCustomerID() % queueLength);
+        notify();
+
+        return next;
+    }
 
     public synchronized void putNewCustomer() throws InterruptedException {
         while (full()) {
             gui.println("Doorman is waiting for free chairs");
             wait();
+            gui.println("Doorman is notified of free chairs");
         }
 
-        Customer next = new Customer();
-        customerQueue.add(next);
-        gui.fillLoungeChair(next.getCustomerID() % queueLength, next);
+        Customer newCustomer = new Customer();
+        customerQueue.add(newCustomer);
+        gui.fillLoungeChair(newCustomer.getCustomerID() % queueLength, newCustomer);
+        notify();
     }
+
 
     public boolean full() {
         return customerQueue.size() >= queueLength;

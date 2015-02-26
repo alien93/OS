@@ -39,38 +39,31 @@ public class Barber implements Runnable {
 
     @Override
     public void run() {
-        // TODO: return from run on interrupt
     	while(true){
-    		//fetch the next customer from the queue    		
-    		Customer customer = this.queue.getNextCustomer();
-    		this.gui.fillBarberChair(pos, customer);
-    		this.gui.println("Barber " + this.pos + " is working");
-    		
-    		//thread sleeps through the time it takes to cut the hair
-    		try{
-    			// TODO: how to make do it with the barberThread
-    			Thread.sleep(Globals.barberWork);
-    		}catch(Exception e){
-    			
+
+            try {
+                //fetch the next customer from the queue
+                Customer customer = this.queue.getNextCustomer();
+                this.gui.fillBarberChair(pos, customer);
+                this.gui.println("Barber " + this.pos + " is working");
+
+                // Barber is working
+                Thread.sleep(Globals.barberWork);
+
+                this.gui.emptyBarberChair(pos);
+                // Done, start sleeping random time
+                this.gui.barberIsSleeping(pos);
+                Thread.sleep((long) (Globals.barberSleep*Math.random()));
+
+                // Awaken and take next customer
+                this.gui.barberIsAwake(pos);
+
+    		} catch(InterruptedException e){
+    			return;
     		}
     		
-    		//finish cutting
-    		this.gui.emptyBarberChair(pos);
-    		this.gui.println(this.pos + " is now free");
-    		
-    		//the barber is tired, have to sleep zzz...
-    		try{
-    			this.gui.barberIsSleeping(pos);
-    			// TODO: how to do it with the barberThread
-    			Thread.sleep((long) (Globals.barberSleep*Math.random()));
-    			
-    		//after sleeping for a random time, the barber wakes up
-    			this.gui.barberIsAwake(pos);
-    			
-    		}catch(Exception e){
-    			
-    		}
     	}
+
     }
 
 }
