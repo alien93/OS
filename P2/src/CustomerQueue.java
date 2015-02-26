@@ -47,28 +47,16 @@ public class CustomerQueue {
     public synchronized void putNewCustomer() throws InterruptedException {
         while (full()) {
             gui.println("Doorman is waiting for free chairs");
-            try {
-                wait();
-            }
-            catch (InterruptedException e){
-
-            }
-
-
+            wait();
+            gui.println("Doorman is notified of free chairs");
         }
 
         Customer next = new Customer();
         customerQueue.add(next);
-        for (int i = 0; i < chairs.length; i++){
-            if (chairs[i] == 0) {
-                chairs[i] = next.getCustomerID();
-                gui.fillLoungeChair(i, next);
-                break;
-            }
-        }
+        gui.fillLoungeChair(next.getCustomerID() % queueLength, next);
         notify();
-        //gui.fillLoungeChair(next.getCustomerID() % queueLength, next);
     }
+
 
     public boolean full() {
         return customerQueue.size() >= queueLength;
