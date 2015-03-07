@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.*;
 
 /**
  * This class contains data associated with processes,
