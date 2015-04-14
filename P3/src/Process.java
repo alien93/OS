@@ -116,5 +116,7 @@ public class Process implements Constants
 		statistics.nofCompletedProcesses++;
 	}
 
-	// Add more methods as needed
+	public long getCpuTime() {return cpuTimeNeeded;}
+
+    public void setCpuTime(long cpuTime) {cpuTimeNeeded = cpuTime;}
 }
