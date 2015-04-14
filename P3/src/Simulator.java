@@ -19,7 +19,9 @@ public class Simulator implements Constants
 	private long simulationLength;
 	/** The average length between process arrivals */
 	private long avgArrivalInterval;
-	// Add member variables as needed
+
+	private CPU cpu;
+	private IO io;
 
 	/**
 	 * Constructs a scheduling simulator with the given parameters.
@@ -42,8 +44,8 @@ public class Simulator implements Constants
 		eventQueue = new EventQueue();
 		memory = new Memory(memoryQueue, memorySize, statistics);
 		clock = 0;
-        CPU cpu = new CPU(cpuQueue, maxCpuTime);
-        IO io = new IO(ioQueue, avgIoTime);
+        cpu = new CPU(cpuQueue, maxCpuTime);
+        io = new IO(ioQueue, avgIoTime);
 		// Add code as needed
     }
 
@@ -79,6 +81,10 @@ public class Simulator implements Constants
 
 		}
 		System.out.println("..done.");
+		// Stop threads:
+		cpu.stopThread();
+		io.stopThread();
+
 		// End the simulation by printing out the required statistics
 		statistics.printReport(simulationLength);
 	}
