@@ -21,18 +21,23 @@ public class CPU implements Runnable{
     }
 
 
-
     @Override
     public void run() {
         while(!cpuQueue.isEmpty()){
             currentProcess= (Process) cpuQueue.removeNext();
             if(currentProcess.getCpuTime()<maxCpuTime){
                 try {
-                    cpuThread.sleep(maxCpuTime);
+                    cpuThread.sleep(currentProcess.getCpuTime());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
+            }else {
+                try {
+                    cpuThread.sleep(maxCpuTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
