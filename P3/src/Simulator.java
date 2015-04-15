@@ -81,9 +81,6 @@ public class Simulator implements Constants
 
 		}
 		System.out.println("..done.");
-		// Stop threads:
-		cpu.stopThread();
-		io.stopThread();
 
 		// End the simulation by printing out the required statistics
 		statistics.printReport(simulationLength);
@@ -137,8 +134,12 @@ public class Simulator implements Constants
 		Process p = memory.checkMemory(clock);
 		// As long as there is enough memory, processes are moved from the memory queue to the cpu queue
 		while(p != null) {
-			
-			// TODO: Add this process to the CPU queue!
+
+			// Add this process to the CPU queue!
+			synchronized (cpu.getQueue()) {
+				cpu.getQueue().insert(p);
+			}
+
 			// Also add new events to the event queue if needed
 
 			// Since we haven't implemented the CPU and I/O device yet,
@@ -158,7 +159,9 @@ public class Simulator implements Constants
 	 * Simulates a process switch.
 	 */
 	private void switchProcess() {
-		// Incomplete
+		Process p = cpu.getCurrentProcess();
+		p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
+		cpu.getQueue().insert(p);
 	}
 
 	/**

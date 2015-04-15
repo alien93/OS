@@ -119,4 +119,12 @@ public class Process implements Constants
 	public long getCpuTime() {return cpuTimeNeeded;}
 
     public void setCpuTime(long cpuTime) {cpuTimeNeeded = cpuTime;}
+
+	public long getTimeOfLastEvent() {
+		return timeOfLastEvent;
+	}
+
+	public void setTimeOfLastEvent(long clock) {
+		this.timeOfLastEvent = timeOfLastEvent;
+	}
 }
