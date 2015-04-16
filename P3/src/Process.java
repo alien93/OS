@@ -119,4 +119,6 @@ public class Process implements Constants
 	public long getCpuTime() {return cpuTimeNeeded;}
 
     public void setCpuTime(long cpuTime) {cpuTimeNeeded = cpuTime;}
+
+    public long getTimeToNextIoOperation() {return timeToNextIoOperation;}
 }

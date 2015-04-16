@@ -22,6 +22,7 @@ public class Simulator implements Constants
 
 	private CPU cpu;
 	private IO io;
+    private long maxCpuTime;
 
 	/**
 	 * Constructs a scheduling simulator with the given parameters.
@@ -183,6 +184,27 @@ public class Simulator implements Constants
 	private void endIoOperation() {
 		// Incomplete
 	}
+
+    private Event createEvent(Process process) {
+        Event event;
+        if (this.maxCpuTime >= process.getTimeToNextIoOperation()) {
+            if (process.getCpuTime() > process.getTimeToNextIoOperation()) {
+                event = new Event(IO_REQUEST, this.clock + process.getTimeToNextIoOperation());
+            }
+            else {
+                event = new Event(END_PROCESS, this.clock + process.getCpuTime());
+            }
+        }
+        else {
+            if (process.getCpuTime() > this.maxCpuTime) {
+                event = new Event(SWITCH_PROCESS, this.clock + this.maxCpuTime);
+            }
+            else {
+                event = new Event(END_PROCESS, this.clock + process.getCpuTime());
+            }
+        }
+        return event;
+    }
 
 	/**
 	 * Reads a number from the an input reader.
