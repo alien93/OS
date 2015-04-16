@@ -23,6 +23,8 @@ public class Simulator implements Constants
 	private CPU cpu;
 	private IO io;
     private long maxCpuTime;
+    private Queue cpuQueue;
+    private Process currentCpuProcess;
 
 	/**
 	 * Constructs a scheduling simulator with the given parameters.
@@ -141,7 +143,13 @@ public class Simulator implements Constants
 			
 			// TODO: Add this process to the CPU queue!
 			// Also add new events to the event queue if needed
+            this.cpuQueue.insert(p);
 
+            if (currentCpuProcess == null) {
+                this.currentCpuProcess = (Process)this.cpuQueue.removeNext();
+                this.eventQueue.insertEvent(createEvent(this.currentCpuProcess));
+                this.gui.setCpuActive(currentCpuProcess);
+            }
 			// Since we haven't implemented the CPU and I/O device yet,
 			// we let the process leave the system immediately, for now.
 			memory.processCompleted(p);
