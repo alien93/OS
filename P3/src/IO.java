@@ -3,36 +3,15 @@ import javax.swing.*;
 /**
  * Created by bflugon on 14.04.15.
  */
-public class IO implements Constants {
+public class IO extends Unit {
 
-    private Queue queue;
-    private Process currentProcess;
-    private Gui gui;
-    private EventQueue eventQueue;
-
-
-    public IO(Queue queue, Gui gui, EventQueue evqueue) {
-        this.queue = queue;
-        this.gui = gui;
-        this.eventQueue = evqueue;
+    public IO(Queue queue) {
+        super(queue);
     }
 
-    public Queue getQueue() {
-        return queue;
-    }
-
-    public Process getCurrentProcess() {
-        return currentProcess;
-    }
-
-    public void setCurrentProcess(Process currentProcess) {
-        gui.setCpuActive(currentProcess);
-        this.currentProcess = currentProcess;
-    }
-
-    public void processNext() {
-        Process p = (Process) queue.removeNext();
+    public Process processNext() {
+        Process p = (Process) getQueue().removeNext();
         setCurrentProcess(p);
-        //eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random()))); TODO
+        return p;
     }
 }

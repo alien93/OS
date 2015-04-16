@@ -47,9 +47,10 @@ public class Simulator implements Constants
 		eventQueue = new EventQueue();
 		memory = new Memory(memoryQueue, memorySize, statistics);
 		clock = 0;
-        cpu = new CPU(cpuQueue, maxCpuTime, gui);
-        io = new IO(ioQueue, gui, eventQueue);
+        cpu = new CPU(cpuQueue, maxCpuTime);
+        io = new IO(ioQueue);
 		this.avgIOTime = avgIoTime;
+        this.maxCpuTime=maxCpuTime;
     }
 
     /**
@@ -58,8 +59,6 @@ public class Simulator implements Constants
 	 * GUI is clicked.
 	 */
 	public void simulate() {
-		// TODO: You may want to extend this method somewhat.
-
 		System.out.print("Simulating...");
 		// Genererate the first process arrival event
 		eventQueue.insertEvent(new Event(NEW_PROCESS, 0));
