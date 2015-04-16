@@ -9,9 +9,14 @@ public class CPU extends Unit{
 
     public CPU(Queue queue, long maxCpuTime){
         super(queue);
+        Unit.cpu = this;
         this.maxCpuTime=maxCpuTime;
     }
 
+    /**
+     *
+     * @return the old process that was removed
+     */
     public Process processNext() {
         Process p = getCurrentProcess();
         if(!getQueue().isEmpty()){

@@ -5,6 +5,8 @@ public abstract class Unit {
 
     private Queue queue;
     private Process currentProcess;
+    public static CPU cpu;
+    public static IO io;
 
     public Unit(Queue queue){
         this.queue=queue;

@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Random;
 
 /**
  * The main class of the P3 exercise. This class is only partially complete.
@@ -145,8 +144,6 @@ public class Simulator implements Constants
                 this.eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
                 this.gui.setCpuActive(this.cpu.getCurrentProcess());
             }
-			// Since we haven't implemented the CPU and I/O device yet,
-			// we let the process leave the system immediately, for now.
 
 			// Update statistics
 			p.updateStatistics(statistics);
@@ -167,7 +164,6 @@ public class Simulator implements Constants
 
         this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
         this.gui.setCpuActive(cpu.getCurrentProcess());
-		// TODO: create event, either io or endprocess or switch_process
 	}
 
 	/**
@@ -196,9 +192,16 @@ public class Simulator implements Constants
 	 */
 	private void processIoRequest() {
 		Process  p = cpu.getCurrentProcess();
-		io.getQueue().insert(p);
+		if (io.getCurrentProcess() == null) {
+			io.setCurrentProcess(p);
+			gui.setIoActive(p);
+		} else {
+			io.getQueue().insert(p);
+		}
 		eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
 		cpu.processNext();
+		gui.setCpuActive(cpu.getCurrentProcess());
+
 	}
 
 	/**
@@ -208,7 +211,7 @@ public class Simulator implements Constants
 	private void endIoOperation() {
 		Process p = io.getCurrentProcess();
 		cpu.getQueue().insert(p);
-		createEvent(p);
+		eventQueue.insertEvent(createEvent(p));
 		io.processNext();
 	}
 
