@@ -164,9 +164,12 @@ public class Simulator implements Constants
 		p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
 		cpu.processNext().setTimeOfLastEvent(clock);
+
+        this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
+        this.gui.setCpuActive(cpu.getCurrentProcess());
 		// TODO: create event, either io or endprocess or switch_process
 	}
-
+20
 	/**
 	 * Ends the active process, and deallocates any resources allocated to it.
 	 */
@@ -175,6 +178,16 @@ public class Simulator implements Constants
 		cpu.processNext().setTimeOfLastEvent(clock);
 		memory.processCompleted(p);
 		flushMemoryQueue();
+        if (this.cpu.getQueue() == null) {
+            this.cpu.setCurrentProcess(null);
+            this.gui.setCpuActive(null);
+        }
+        else {
+            cpu.setCurrentProcess((Process)cpu.getQueue().removeNext());
+            this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
+            this.gui.setCpuActive(cpu.getCurrentProcess());
+        }
+
 	}
 
 	/**

@@ -45,6 +45,8 @@ public class Process implements Constants
 	/** The global time of the last event involving this process */
 	private long timeOfLastEvent;
 
+    private long enteredCpuTime;
+
 	/**
 	 * Creates a new process with given parameters. Other parameters are randomly
 	 * determined.
@@ -129,4 +131,31 @@ public class Process implements Constants
 	}
 
     public long getTimeToNextIoOperation() {return timeToNextIoOperation;}
+
+    public void enteredCpu(long clock) {
+        this.enteredCpuTime = clock;
+    }
+
+    public void leftCpu(long clock) {
+        long time = clock - this.enteredCpuTime;
+        this.cpuTimeNeeded -= time;
+        this.timeToNextIoOperation -= time;
+        this.timeSpentInCpu += time;
+    }
+
+    public void enteredReadyQueue(long clock) {
+        this.timeOfLastEvent = clock;
+    }
+
+    public void leftReadyQueue(long clock) {
+        this.timeSpentInReadyQueue += (clock - this.timeOfLastEvent);
+    }
+
+    public void enteredIoQueue(long clock) {
+        this.timeOfLastEvent = clock;
+    }
+
+    public void leftIoQueue(long clock) {
+        this.timeSpentWaitingForIo += (clock - this.timeOfLastEvent);
+    }
 }
