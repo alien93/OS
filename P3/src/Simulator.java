@@ -178,7 +178,7 @@ public class Simulator implements Constants
 		cpu.processNext().setTimeOfLastEvent(clock);
 		memory.processCompleted(p);
 		flushMemoryQueue();
-        if (this.cpu.getQueue() == null) {
+        if (this.cpu.getQueue().isEmpty()) {
             this.cpu.setCurrentProcess(null);
             this.gui.setCpuActive(null);
         }
