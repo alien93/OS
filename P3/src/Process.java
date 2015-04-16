@@ -127,4 +127,6 @@ public class Process implements Constants
 	public void setTimeOfLastEvent(long clock) {
 		this.timeOfLastEvent = timeOfLastEvent;
 	}
+	
+    public long getTimeToNextIoOperation() {return timeToNextIoOperation;}
 }

@@ -22,6 +22,9 @@ public class Simulator implements Constants
 
 	private CPU cpu;
 	private IO io;
+    private long maxCpuTime;
+    private Queue cpuQueue;
+    private Process currentCpuProcess;
 
 	/**
 	 * Constructs a scheduling simulator with the given parameters.
@@ -141,7 +144,13 @@ public class Simulator implements Constants
 			}
 
 			// Also add new events to the event queue if needed
+            this.cpuQueue.insert(p);
 
+            if (currentCpuProcess == null) {
+                this.currentCpuProcess = (Process)this.cpuQueue.removeNext();
+                this.eventQueue.insertEvent(createEvent(this.currentCpuProcess));
+                this.gui.setCpuActive(currentCpuProcess);
+            }
 			// Since we haven't implemented the CPU and I/O device yet,
 			// we let the process leave the system immediately, for now.
 			memory.processCompleted(p);
@@ -186,6 +195,27 @@ public class Simulator implements Constants
 	private void endIoOperation() {
 		// Incomplete
 	}
+
+    private Event createEvent(Process process) {
+        Event event;
+        if (this.maxCpuTime >= process.getTimeToNextIoOperation()) {
+            if (process.getCpuTime() > process.getTimeToNextIoOperation()) {
+                event = new Event(IO_REQUEST, this.clock + process.getTimeToNextIoOperation());
+            }
+            else {
+                event = new Event(END_PROCESS, this.clock + process.getCpuTime());
+            }
+        }
+        else {
+            if (process.getCpuTime() > this.maxCpuTime) {
+                event = new Event(SWITCH_PROCESS, this.clock + this.maxCpuTime);
+            }
+            else {
+                event = new Event(END_PROCESS, this.clock + process.getCpuTime());
+            }
+        }
+        return event;
+    }
 
 	/**
 	 * Reads a number from the an input reader.
