@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Random;
 
 /**
  * The main class of the P3 exercise. This class is only partially complete.
@@ -23,8 +24,7 @@ public class Simulator implements Constants
 	private CPU cpu;
 	private IO io;
     private long maxCpuTime;
-    private Queue cpuQueue;
-    private Process currentCpuProcess;
+	private long avgIOTime;
 
 	/**
 	 * Constructs a scheduling simulator with the given parameters.
@@ -47,9 +47,9 @@ public class Simulator implements Constants
 		eventQueue = new EventQueue();
 		memory = new Memory(memoryQueue, memorySize, statistics);
 		clock = 0;
-        cpu = new CPU(cpuQueue, maxCpuTime);
-        io = new IO(ioQueue, avgIoTime);
-		// Add code as needed
+        cpu = new CPU(cpuQueue, maxCpuTime, gui);
+        io = new IO(ioQueue, gui, eventQueue);
+		this.avgIOTime = avgIoTime;
     }
 
     /**
@@ -138,24 +138,17 @@ public class Simulator implements Constants
 		// As long as there is enough memory, processes are moved from the memory queue to the cpu queue
 		while(p != null) {
 
-			// Add this process to the CPU queue!
-			synchronized (cpu.getQueue()) {
-				cpu.getQueue().insert(p);
-			}
-
 			// Also add new events to the event queue if needed
-            this.cpuQueue.insert(p);
+            this.cpu.getQueue().insert(p);
 
-            if (currentCpuProcess == null) {
-                this.currentCpuProcess = (Process)this.cpuQueue.removeNext();
-                this.eventQueue.insertEvent(createEvent(this.currentCpuProcess));
-                this.gui.setCpuActive(currentCpuProcess);
+            if (this.cpu.getCurrentProcess() == null) {
+				this.cpu.setCurrentProcess((Process) this.cpu.getQueue().removeNext());
+                this.eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
+                this.gui.setCpuActive(this.cpu.getCurrentProcess());
             }
 			// Since we haven't implemented the CPU and I/O device yet,
 			// we let the process leave the system immediately, for now.
-			memory.processCompleted(p);
-			// Try to use the freed memory:
-			flushMemoryQueue();
+
 			// Update statistics
 			p.updateStatistics(statistics);
 
@@ -171,13 +164,18 @@ public class Simulator implements Constants
 		Process p = cpu.getCurrentProcess();
 		p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
+		cpu.processNext().setTimeOfLastEvent(clock);
+		// TODO: create event, either io or endprocess or switch_process
 	}
 
 	/**
 	 * Ends the active process, and deallocates any resources allocated to it.
 	 */
 	private void endProcess() {
-		// Incomplete
+		Process p = cpu.getCurrentProcess();
+		cpu.processNext().setTimeOfLastEvent(clock);
+		memory.processCompleted(p);
+		flushMemoryQueue();
 	}
 
 	/**
@@ -185,7 +183,10 @@ public class Simulator implements Constants
 	 * perform an I/O operation.
 	 */
 	private void processIoRequest() {
-		// Incomplete
+		Process  p = cpu.getCurrentProcess();
+		io.getQueue().insert(p);
+		eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
+		cpu.processNext();
 	}
 
 	/**
@@ -193,7 +194,10 @@ public class Simulator implements Constants
 	 * is done with its I/O operation.
 	 */
 	private void endIoOperation() {
-		// Incomplete
+		Process p = io.getCurrentProcess();
+		cpu.getQueue().insert(p);
+		createEvent(p);
+		io.processNext();
 	}
 
     private Event createEvent(Process process) {
