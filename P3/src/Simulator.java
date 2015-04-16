@@ -169,7 +169,7 @@ public class Simulator implements Constants
         this.gui.setCpuActive(cpu.getCurrentProcess());
 		// TODO: create event, either io or endprocess or switch_process
 	}
-20
+
 	/**
 	 * Ends the active process, and deallocates any resources allocated to it.
 	 */
