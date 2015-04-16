@@ -7,7 +7,6 @@ public class IO extends Unit {
 
     public IO(Queue queue) {
         super(queue);
-        Unit.io = this;
     }
 
     public Process processNext() {

@@ -9,7 +9,6 @@ public class CPU extends Unit{
 
     public CPU(Queue queue, long maxCpuTime){
         super(queue);
-        Unit.cpu = this;
         this.maxCpuTime=maxCpuTime;
     }
 
