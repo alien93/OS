@@ -143,8 +143,9 @@ public class Simulator implements Constants
             p.enteredReadyQueue(clock);
 
             if (this.cpu.getCurrentProcess() == null) {
-				this.cpu.setCurrentProcess((Process) this.cpu.getQueue().removeNext());
+				this.cpu.processNext();
                 this.cpu.getCurrentProcess().enteredCpu(clock);
+                this.cpu.getCurrentProcess().leftReadyQueue(clock);
                 this.eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
                 this.gui.setCpuActive(this.cpu.getCurrentProcess());
             }
@@ -161,28 +162,27 @@ public class Simulator implements Constants
 	 * Simulates a process switch.
 	 */
 	private void switchProcess() {
-		Process p = cpu.getCurrentProcess();
+        System.out.println("switchProcess");
+        Process p = cpu.getCurrentProcess();
         p.leftCpu(clock);
         p.enteredReadyQueue(clock);
 		//p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
-		p = (Process)cpu.getQueue().getNext();
+		p = cpu.processNext();
         //p.setTimeOfLastEvent(clock);
         p.leftReadyQueue(clock);
         p.enteredCpu(clock);
-        if (!this.cpu.getQueue().isEmpty()) {
-            this.cpu.getQueue().removeNext();
-        }
 
         this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
-        this.gui.setCpuActive(cpu.getCurrentProcess());
+        this.gui.setCpuActive(p);
 	}
 
 	/**
 	 * Ends the active process, and deallocates any resources allocated to it.
 	 */
 	private void endProcess() {
-		Process p = cpu.getCurrentProcess();
+        System.out.println("endProcess");
+        Process p = cpu.getCurrentProcess();
         p.leftCpu(clock);
 		memory.processCompleted(p);
 		flushMemoryQueue();
@@ -194,6 +194,7 @@ public class Simulator implements Constants
             //TODO: Fix this shit
             p = cpu.processNext();
             p.enteredCpu(clock);
+            p.leftReadyQueue(clock);
             //p.setTimeOfLastEvent(clock);
             //cpu.setCurrentProcess((Process)cpu.getQueue().removeNext());
             this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
@@ -207,7 +208,8 @@ public class Simulator implements Constants
 	 * perform an I/O operation.
 	 */
 	private void processIoRequest() {
-		Process  p = cpu.getCurrentProcess();
+        System.out.println("processIoRequest");
+        Process  p = cpu.getCurrentProcess();
 		if (io.getCurrentProcess() == null) {
 			io.setCurrentProcess(p);
 			gui.setIoActive(p);
@@ -216,8 +218,7 @@ public class Simulator implements Constants
             p.enteredIoQueue(clock);
 		}
         p.leftCpu(clock);
-        this.eventQueue.insertEvent(createEvent(p));
-		//eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
+		eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
 		//cpu.processNext();
 		//gui.setCpuActive(cpu.getCurrentProcess());
         if (this.cpu.getQueue().isEmpty()) {
@@ -238,9 +239,10 @@ public class Simulator implements Constants
 	 * is done with its I/O operation.
 	 */
 	private void endIoOperation() {
-		Process p = io.getCurrentProcess();
-		cpu.getQueue().insert(p);
+        System.out.println("endIoOperation");
+        Process p = io.getCurrentProcess();
         p.setTimeToNextIoOperation();
+		cpu.getQueue().insert(p);
         p.leftIoQueue(clock);
         if (this.io.getQueue().isEmpty()) {
             this.io.setCurrentProcess(null);
