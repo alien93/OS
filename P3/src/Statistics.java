@@ -18,7 +18,6 @@ public class Statistics
 
 	public long processSwitches = 0;
 	public long processIO = 0;
-	public long avgThroughput0=0;
 	public long totalCpuTime = 0;
 	public long largestMemoryQueue = 0;
 	public long avgMemoryQueue = 0;
@@ -32,7 +31,7 @@ public class Statistics
 	public long avgTimePerProcess=0;
 	public long avgTimeWaitForIO=0;
 	public long avgTimeInIo=0;
-	
+
 	/**
 	 * Prints out a report summarizing all collected data about the simulation.
 	 * @param simulationLength	The number of milliseconds that the simulation covered.

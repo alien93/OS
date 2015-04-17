@@ -173,6 +173,8 @@ public class Simulator implements Constants
 
         this.eventQueue.insertEvent(createEvent(p));
         this.gui.setCpuActive(p);
+
+		statistics.processSwitches++;
 	}
 
 	/**
@@ -235,6 +237,7 @@ public class Simulator implements Constants
             this.gui.setCpuActive(this.cpu.getCurrentProcess());
             this.cpu.getCurrentProcess().leftReadyQueue(clock);
         }
+
 	}
 
 	/**
@@ -265,6 +268,8 @@ public class Simulator implements Constants
             eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
             this.gui.setCpuActive(this.cpu.getCurrentProcess());
         }
+
+		statistics.processIO++;
 	}
 
     private Event createEvent(Process process) {
