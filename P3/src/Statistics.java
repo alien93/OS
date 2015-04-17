@@ -21,7 +21,7 @@ public class Statistics
 
     public long totalTimeSpentWaitingForIO = 0;
     public long totalTimeSpentWaitingForCpu = 0;
-    
+
     public long totalIoTime = 0; // DONE
 	public long totalCpuTime = 0;//DONE
 	public long totalSystemTime = totalCpuTime + totalIoTime + totalTimeSpentWaitingForMemory + totalTimeSpentWaitingForCpu + totalTimeSpentWaitingForIO;
