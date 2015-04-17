@@ -264,8 +264,9 @@ public class Simulator implements Constants
     private Event createEvent(Process process) {
         Event event;
         System.out.println("Genererer event");
+        System.out.println("Tid på CPU: " + process.getCpuTime());
         System.out.println("Tid til IO: " + process.getTimeToNextIoOperation());
-        if (this.maxCpuTime <= process.getTimeToNextIoOperation()) {
+        if (this.maxCpuTime >= process.getTimeToNextIoOperation()) {
             if (process.getCpuTime() > process.getTimeToNextIoOperation()) {
                 event = new Event(IO_REQUEST, this.clock + process.getTimeToNextIoOperation());
             }
