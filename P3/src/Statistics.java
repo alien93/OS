@@ -19,6 +19,9 @@ public class Statistics
 	public long processSwitches = 0;
 	public long processIO = 0;
 	public long totalCpuTime = 0;
+    public long cpuProcessing = 0;
+    public long cpuWaiting = 0;
+    public long totalTime = 0;
 	public long largestMemoryQueue = 0;
 	public long avgMemoryQueue = 0;
 	public long largestCpuQueue=0;
@@ -49,10 +52,10 @@ public class Statistics
 
         System.out.println();
         //TODO: add correct fields/values
-        System.out.println(" Total CPU time spent processing:                                 "+totalCpuTime);
-        System.out.println(" Fraction of CPU time spent processing:                           ");
-        System.out.println(" Total CPU time spent waiting:                                    ");
-        System.out.println(" Fraction of CPU time spent waiting:                              ");
+        System.out.println(" Total CPU time spent processing:                                 "+cpuProcessing);
+        System.out.println(" Fraction of CPU time spent processing:                           "+(cpuProcessing / totalTime));
+        System.out.println(" Total CPU time spent waiting:                                    "+cpuWaiting);
+        System.out.println(" Fraction of CPU time spent waiting:                              "+(cpuWaiting / totalTime));
 
         System.out.println();
 
