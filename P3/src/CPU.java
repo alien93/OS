@@ -5,7 +5,6 @@
 public class CPU extends Unit{
 
     private long maxCpuTime;
-    private Process currentProcess;
 
     public CPU(Queue queue, long maxCpuTime){
         super(queue);

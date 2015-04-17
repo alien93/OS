@@ -166,7 +166,7 @@ public class Simulator implements Constants
 		//p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
 		cpu.processNext();
-		p = cpu.getCurrentProcess();
+        p = this.cpu.getCurrentProcess();
         //p.setTimeOfLastEvent(clock);
         p.leftReadyQueue(clock);
         p.enteredCpu(clock);
@@ -191,7 +191,7 @@ public class Simulator implements Constants
         }
         else {
             //TODO: Fix this shit
-            p = cpu.processNext();
+            cpu.processNext();
             p.enteredCpu(clock);
             p.leftReadyQueue(clock);
             //p.setTimeOfLastEvent(clock);
@@ -265,8 +265,9 @@ public class Simulator implements Constants
     private Event createEvent(Process process) {
         Event event;
         System.out.println("Genererer event");
+        System.out.println("Tid på CPU: " + process.getCpuTime());
         System.out.println("Tid til IO: " + process.getTimeToNextIoOperation());
-        if (this.maxCpuTime <= process.getTimeToNextIoOperation()) {
+        if (this.maxCpuTime >= process.getTimeToNextIoOperation()) {
             if (process.getCpuTime() > process.getTimeToNextIoOperation()) {
                 event = new Event(IO_REQUEST, this.clock + process.getTimeToNextIoOperation());
             }
