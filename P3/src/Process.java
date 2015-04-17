@@ -14,7 +14,7 @@ public class Process implements Constants
 	/** The font used by all processes */
 	private static Font font = new Font("Arial", Font.PLAIN, 10);
 	/** The ID of this process */
-	private long processId;
+	public long processId;
 	/** The color of this process */
 	private Color color;
 	/** The amount of memory needed by this process */
@@ -157,5 +157,9 @@ public class Process implements Constants
 
     public void leftIoQueue(long clock) {
         this.timeSpentWaitingForIo += (clock - this.timeOfLastEvent);
+    }
+
+    public void setTimeToNextIoOperation() {
+        this.timeToNextIoOperation = (long)((Math.random()*avgIoInterval)*2+1);
     }
 }

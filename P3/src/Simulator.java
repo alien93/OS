@@ -93,7 +93,8 @@ public class Simulator implements Constants
 	 * @param event	The event to be processed.
 	 */
 	private void processEvent(Event event) {
-		switch (event.getType()) {
+        System.out.println("EventType: " + event.getType());
+        switch (event.getType()) {
 			case NEW_PROCESS:
 				createProcess();
 				break;
@@ -137,10 +138,13 @@ public class Simulator implements Constants
 		while(p != null) {
 
 			// Also add new events to the event queue if needed
+            p.setTimeToNextIoOperation();
             this.cpu.getQueue().insert(p);
+            p.enteredReadyQueue(clock);
 
             if (this.cpu.getCurrentProcess() == null) {
 				this.cpu.setCurrentProcess((Process) this.cpu.getQueue().removeNext());
+                this.cpu.getCurrentProcess().enteredCpu(clock);
                 this.eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
                 this.gui.setCpuActive(this.cpu.getCurrentProcess());
             }
@@ -158,9 +162,14 @@ public class Simulator implements Constants
 	 */
 	private void switchProcess() {
 		Process p = cpu.getCurrentProcess();
-		p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
+        p.leftCpu(clock);
+        p.enteredReadyQueue(clock);
+		//p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
-		cpu.processNext().setTimeOfLastEvent(clock);
+		p = cpu.processNext();
+        //p.setTimeOfLastEvent(clock);
+        p.leftReadyQueue(clock);
+        p.enteredCpu(clock);
 
         this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
         this.gui.setCpuActive(cpu.getCurrentProcess());
@@ -171,7 +180,7 @@ public class Simulator implements Constants
 	 */
 	private void endProcess() {
 		Process p = cpu.getCurrentProcess();
-		cpu.processNext().setTimeOfLastEvent(clock);
+        p.leftCpu(clock);
 		memory.processCompleted(p);
 		flushMemoryQueue();
         if (this.cpu.getQueue().isEmpty()) {
@@ -179,6 +188,10 @@ public class Simulator implements Constants
             this.gui.setCpuActive(null);
         }
         else {
+            //TODO: Fix this shit
+            p = cpu.processNext();
+            p.enteredCpu(clock);
+            //p.setTimeOfLastEvent(clock);
             cpu.setCurrentProcess((Process)cpu.getQueue().removeNext());
             this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
             this.gui.setCpuActive(cpu.getCurrentProcess());
@@ -217,7 +230,8 @@ public class Simulator implements Constants
 
     private Event createEvent(Process process) {
         Event event;
-        if (this.maxCpuTime >= process.getTimeToNextIoOperation()) {
+        System.out.println("Tid til IO: " + process.getTimeToNextIoOperation());
+        if (process.getCpuTime() <= process.getTimeToNextIoOperation()) {
             if (process.getCpuTime() > process.getTimeToNextIoOperation()) {
                 event = new Event(IO_REQUEST, this.clock + process.getTimeToNextIoOperation());
             }
@@ -233,6 +247,7 @@ public class Simulator implements Constants
                 event = new Event(END_PROCESS, this.clock + process.getCpuTime());
             }
         }
+        System.out.println("Id: " + process.processId + ", Time: " + process.getCpuTime());
         return event;
     }
 
