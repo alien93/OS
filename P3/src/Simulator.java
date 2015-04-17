@@ -168,7 +168,8 @@ public class Simulator implements Constants
         p.enteredReadyQueue(clock);
 		//p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
-		p = cpu.processNext();
+		cpu.processNext();
+        p = this.cpu.getCurrentProcess();
         //p.setTimeOfLastEvent(clock);
         p.leftReadyQueue(clock);
         p.enteredCpu(clock);
