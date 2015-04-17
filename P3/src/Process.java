@@ -134,6 +134,7 @@ public class Process implements Constants
 
     public void enteredCpu(long clock) {
         this.enteredCpuTime = clock;
+        System.out.println("Prosess " + this.processId + " ankom CPU");
     }
 
     public void leftCpu(long clock) {
@@ -141,22 +142,37 @@ public class Process implements Constants
         this.cpuTimeNeeded -= time;
         this.timeToNextIoOperation -= time;
         this.timeSpentInCpu += time;
+        System.out.println("Prosess " + this.processId + " forlot CPU");
     }
 
     public void enteredReadyQueue(long clock) {
         this.timeOfLastEvent = clock;
+        System.out.println("Prosess " + this.processId + " ankom CPU-kø");
     }
 
     public void leftReadyQueue(long clock) {
         this.timeSpentInReadyQueue += (clock - this.timeOfLastEvent);
+        System.out.println("Prosess " + this.processId + " forlot CPU-kø");
     }
 
     public void enteredIoQueue(long clock) {
         this.timeOfLastEvent = clock;
+        System.out.println("Prosess " + this.processId + " ankom IO-kø");
     }
 
     public void leftIoQueue(long clock) {
         this.timeSpentWaitingForIo += (clock - this.timeOfLastEvent);
+        System.out.println("Prosess " + this.processId + " forlot IO-kø");
+    }
+
+    public void enteredIo(long clock) {
+        this.timeOfLastEvent = clock;
+        System.out.println("Prosess " + this.processId + " forlot IO");
+    }
+
+    public void leftI0(long clock) {
+        this.timeSpentInIo += (clock - this.timeOfLastEvent);
+        System.out.println("Prosess " + this.processId + " forlot IO");
     }
 
     public void setTimeToNextIoOperation() {

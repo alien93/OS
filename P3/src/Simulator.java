@@ -144,8 +144,8 @@ public class Simulator implements Constants
 
             if (this.cpu.getCurrentProcess() == null) {
 				this.cpu.processNext();
-                this.cpu.getCurrentProcess().enteredCpu(clock);
                 this.cpu.getCurrentProcess().leftReadyQueue(clock);
+                this.cpu.getCurrentProcess().enteredCpu(clock);
                 this.eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
                 this.gui.setCpuActive(this.cpu.getCurrentProcess());
             }
@@ -208,6 +208,7 @@ public class Simulator implements Constants
 	 * perform an I/O operation.
 	 */
 	private void processIoRequest() {
+        //TODO: Fix processing IO queue
         System.out.println("processIoRequest");
         Process  p = cpu.getCurrentProcess();
 		if (io.getCurrentProcess() == null) {
@@ -243,13 +244,13 @@ public class Simulator implements Constants
         Process p = io.getCurrentProcess();
         p.setTimeToNextIoOperation();
 		cpu.getQueue().insert(p);
-        p.leftIoQueue(clock);
         if (this.io.getQueue().isEmpty()) {
             this.io.setCurrentProcess(null);
             this.gui.setIoActive(null);
         }
         else {
             this.io.processNext();
+            this.io.getCurrentProcess().leftIoQueue(clock);
             this.gui.setIoActive(this.io.getCurrentProcess());
         }
         if (this.cpu.getCurrentProcess() == null) {
