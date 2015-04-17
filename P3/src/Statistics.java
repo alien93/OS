@@ -25,6 +25,7 @@ public class Statistics
 	public long largestCpuQueue=0; //DONE
 	public long avgCpuQueue=0;
 	public long largestIoQueue=0; //DONE
+    public long totalTimeSpentWaitingForCpu = 0;
 
 	public long avgIoQueue=0;
 
@@ -81,7 +82,7 @@ public class Statistics
 
         System.out.println("Average time spent in system per process:                         "+(totalSystemTime / nofCompletedProcesses));
         System.out.println("Average time spent waiting for memory per process:                "+totalTimeSpentWaitingForMemory / nofCompletedProcesses);
-        System.out.println("Average time spent waiting for cpu per process:                   "+(totalCpuTime / nofCompletedProcesses));
+        System.out.println("Average time spent waiting for cpu per process:                   "+(totalTimeSpentWaitingForCpu / nofCompletedProcesses));
         System.out.println("Average time spent processing per process:                        "+(totalCpuTime / nofCompletedProcesses));
         System.out.println("Average time spent waiting for I/O per process:                   "+(totalTimeSpentWaitingForIO / nofCompletedProcesses));
         System.out.println("Average time spent in I/O per process:                            "+(totalIoTime / nofCompletedProcesses));
