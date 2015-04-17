@@ -93,7 +93,7 @@ public class Simulator implements Constants
 	 * @param event	The event to be processed.
 	 */
 	private void processEvent(Event event) {
-        System.out.println("EventType: " + event.getType());
+        System.out.println("Prosesserer EventType: " + event.getType());
         switch (event.getType()) {
 			case NEW_PROCESS:
 				createProcess();
@@ -166,10 +166,13 @@ public class Simulator implements Constants
         p.enteredReadyQueue(clock);
 		//p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
-		p = cpu.processNext();
+		p = (Process)cpu.getQueue().getNext();
         //p.setTimeOfLastEvent(clock);
         p.leftReadyQueue(clock);
         p.enteredCpu(clock);
+        if (!this.cpu.getQueue().isEmpty()) {
+            this.cpu.getQueue().removeNext();
+        }
 
         this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
         this.gui.setCpuActive(cpu.getCurrentProcess());
@@ -192,7 +195,7 @@ public class Simulator implements Constants
             p = cpu.processNext();
             p.enteredCpu(clock);
             //p.setTimeOfLastEvent(clock);
-            cpu.setCurrentProcess((Process)cpu.getQueue().removeNext());
+            //cpu.setCurrentProcess((Process)cpu.getQueue().removeNext());
             this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
             this.gui.setCpuActive(cpu.getCurrentProcess());
         }
@@ -257,8 +260,9 @@ public class Simulator implements Constants
 
     private Event createEvent(Process process) {
         Event event;
+        System.out.println("Genererer event");
         System.out.println("Tid til IO: " + process.getTimeToNextIoOperation());
-        if (process.getCpuTime() <= process.getTimeToNextIoOperation()) {
+        if (this.maxCpuTime <= process.getTimeToNextIoOperation()) {
             if (process.getCpuTime() > process.getTimeToNextIoOperation()) {
                 event = new Event(IO_REQUEST, this.clock + process.getTimeToNextIoOperation());
             }
@@ -274,6 +278,7 @@ public class Simulator implements Constants
                 event = new Event(END_PROCESS, this.clock + process.getCpuTime());
             }
         }
+        System.out.println("EventType: " + event.getType());
         System.out.println("Id: " + process.processId + ", Time: " + process.getCpuTime());
         return event;
     }
