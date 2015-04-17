@@ -210,7 +210,11 @@ public class Simulator implements Constants
             this.gui.setCpuActive(cpu.getCurrentProcess());
         }
 
-		statistics.totalCpuTime += p.getTimeSpentInCpu();
+		//statistics.totalCpuTime += p.getTimeSpentInCpu();
+        statistics.totalTimeSpentWaitingForIO += p.getTimeSpentWaitingForIo();
+        statistics.totalTimeSpentWaitingForCpu += p.getTimeSpentInReadyQueue();
+        statistics.totalIoTime += p.getTimeSpentInIo();
+        //statistics.totalTimeSpentWaitingForMemory += p.getTimeSpentWaitingForMemory();
 	}
 
 	/**

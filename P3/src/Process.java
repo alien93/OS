@@ -192,4 +192,26 @@ public class Process implements Constants
 	public long getTimeSpentInCpu() {
 		return timeSpentInCpu;
 	}
+
+    public static long getNextProcessId() {
+        return nextProcessId;
+    }
+
+    public long getTimeSpentWaitingForIo() {
+        return timeSpentWaitingForIo;
+    }
+
+    public long getTimeSpentInIo() {
+        return timeSpentInIo;
+    }
+
+    public long getTimeSpentInReadyQueue() {
+        return timeSpentInReadyQueue;
+    }
+
+    public long getTimeSpentWaitingForMemory() {
+        return timeSpentWaitingForMemory;
+    }
+
+
 }
