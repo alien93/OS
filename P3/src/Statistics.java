@@ -18,13 +18,33 @@ public class Statistics
 
 	public long processSwitches = 0;
 	public long processIO = 0;
-    public long totalIoTime = 0;
+    public long totalIoTime = 0; // DONE
 	public long totalCpuTime = 0;//DONE
 	public long totalSystemTime = totalCpuTime + totalIoTime + totalTimeSpentWaitingForMemory;
 	public long largestMemoryQueue = 0;//DONE
 	public long largestCpuQueue=0; //DONE
 	public long largestIoQueue=0; //DONE
+
     public long totalTimeSpentWaitingForCpu = 0;
+
+	public long totCpuQueue=0;
+	public long numAddedCpuQueue=0;
+
+	public long totIoQueue=0;
+	public long numAddedIoQueue=0;
+
+	public long avgTimeInSystem=0;
+
+	public long avgTimeWaitForMemory=0;
+
+	public long avgTimeWaitForCpu=0;
+
+	public long avgTimePerProcess=0;
+
+	public long avgTimeWaitForIO=0;
+
+	public long avgTimeInIo=0;
+
     public long totalTimeSpentWaitingForIO = 0;
 
 	/**

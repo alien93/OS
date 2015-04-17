@@ -149,6 +149,8 @@ public class Process implements Constants
 		if (timeToNextIoOperation < 0) timeToNextIoOperation = 0;
         this.timeSpentInCpu += time;
 		Simulator.statistics.totalCpuTime += time;
+
+
         System.out.println("Prosess " + this.processId + " forlot CPU");
     }
 
@@ -181,6 +183,7 @@ public class Process implements Constants
 
     public void leftI0(long clock) {
         this.timeSpentInIo += (clock - this.timeOfLastEvent);
+		Simulator.statistics.totalIoTime += clock;
         System.out.println("Prosess " + this.processId + " forlot IO");
     }
 
