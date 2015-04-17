@@ -18,14 +18,18 @@ public class Statistics
 
 	public long processSwitches = 0;
 	public long processIO = 0;
+
+    public long totalTimeSpentWaitingForIO = 0;
+    public long totalTimeSpentWaitingForCpu = 0;
+    
     public long totalIoTime = 0; // DONE
 	public long totalCpuTime = 0;//DONE
-	public long totalSystemTime = totalCpuTime + totalIoTime + totalTimeSpentWaitingForMemory;
+	public long totalSystemTime = totalCpuTime + totalIoTime + totalTimeSpentWaitingForMemory + totalTimeSpentWaitingForCpu + totalTimeSpentWaitingForIO;
 	public long largestMemoryQueue = 0;//DONE
 	public long largestCpuQueue=0; //DONE
 	public long largestIoQueue=0; //DONE
 
-    public long totalTimeSpentWaitingForCpu = 0;
+
 
 	public long totCpuQueue=0;
 	public long numAddedCpuQueue=0;
@@ -45,7 +49,7 @@ public class Statistics
 
 	public long avgTimeInIo=0;
 
-    public long totalTimeSpentWaitingForIO = 0;
+
 
 	/**
 	 * Prints out a report summarizing all collected data about the simulation.
