@@ -39,6 +39,8 @@ public class Memory {
 	 */
 	public void insertProcess(Process p) {
 		memoryQueue.insert(p);
+		if (memoryQueue.getQueueLength() > statistics.largestMemoryQueue)
+			statistics.largestMemoryQueue = memoryQueue.getQueueLength();
 	}
 
     /**

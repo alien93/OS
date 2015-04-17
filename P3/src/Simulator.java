@@ -12,7 +12,7 @@ public class Simulator implements Constants
 	/** Reference to the GUI interface */
 	private Gui gui;
 	/** Reference to the statistics collector */
-	private Statistics statistics;
+	public static Statistics statistics;
 	/** The global clock */
     private long clock;
 	/** The length of the simulation */
