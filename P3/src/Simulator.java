@@ -221,6 +221,8 @@ public class Simulator implements Constants
 		} else {
 			io.getQueue().insert(p);
             p.enteredIoQueue(clock);
+			if (io.getQueue().getQueueLength() > statistics.largestIoQueue)
+				statistics.largestIoQueue = io.getQueue().getQueueLength();
 		}
         p.leftCpu(clock);
 
@@ -251,6 +253,9 @@ public class Simulator implements Constants
         p.leftI0(clock);
         p.enteredReadyQueue(clock);
 		cpu.getQueue().insert(p);
+		if (cpu.getQueue().getQueueLength() > statistics.largestCpuQueue)
+			statistics.largestCpuQueue = cpu.getQueue().getQueueLength();
+
         if (this.io.getQueue().isEmpty()) {
             this.io.setCurrentProcess(null);
             this.gui.setIoActive(null);
