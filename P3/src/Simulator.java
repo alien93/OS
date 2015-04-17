@@ -168,12 +168,13 @@ public class Simulator implements Constants
         p.enteredReadyQueue(clock);
 		//p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
-		p = cpu.processNext();
+		cpu.processNext();
+		p = cpu.getCurrentProcess();
         //p.setTimeOfLastEvent(clock);
         p.leftReadyQueue(clock);
         p.enteredCpu(clock);
 
-        this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
+        this.eventQueue.insertEvent(createEvent(p));
         this.gui.setCpuActive(p);
 	}
 
@@ -181,9 +182,9 @@ public class Simulator implements Constants
 	 * Ends the active process, and deallocates any resources allocated to it.
 	 */
 	private void endProcess() {
-        System.out.println("endProcess");
         Process p = cpu.getCurrentProcess();
-        p.leftCpu(clock);
+		System.out.println("endProcess" + p.getProcessId());
+		p.leftCpu(clock);
 		memory.processCompleted(p);
 		flushMemoryQueue();
         if (this.cpu.getQueue().isEmpty()) {
@@ -214,12 +215,13 @@ public class Simulator implements Constants
 		if (io.getCurrentProcess() == null) {
 			io.setCurrentProcess(p);
 			gui.setIoActive(p);
+			eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime * 2 * Math.random())));
 		} else {
 			io.getQueue().insert(p);
             p.enteredIoQueue(clock);
 		}
         p.leftCpu(clock);
-		eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
+
 		//cpu.processNext();
 		//gui.setCpuActive(cpu.getCurrentProcess());
         if (this.cpu.getQueue().isEmpty()) {
@@ -252,6 +254,7 @@ public class Simulator implements Constants
             this.io.processNext();
             this.io.getCurrentProcess().leftIoQueue(clock);
             this.gui.setIoActive(this.io.getCurrentProcess());
+			eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
         }
         if (this.cpu.getCurrentProcess() == null) {
             this.cpu.processNext();

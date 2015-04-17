@@ -130,7 +130,11 @@ public class Process implements Constants
 		this.timeOfLastEvent = clock;
 	}
 
-    public long getTimeToNextIoOperation() {return timeToNextIoOperation;}
+	public long getProcessId() {
+		return processId;
+	}
+
+	public long getTimeToNextIoOperation() {return timeToNextIoOperation;}
 
     public void enteredCpu(long clock) {
         this.enteredCpuTime = clock;
