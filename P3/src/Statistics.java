@@ -20,7 +20,6 @@ public class Statistics
 	public long processIO = 0;
 	public long totalCpuTime = 0;
 	public long largestMemoryQueue = 0;
-	public long avgMemoryQueue = 0;
 	public long largestCpuQueue=0;
 	public long avgCpuQueue=0;
 	public long largestIoQueue=0;
