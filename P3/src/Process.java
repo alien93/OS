@@ -148,7 +148,6 @@ public class Process implements Constants
         this.timeToNextIoOperation -= time;
 		if (timeToNextIoOperation < 0) timeToNextIoOperation = 0;
         this.timeSpentInCpu += time;
-		Simulator.statistics.totalCpuTime += time;
 
         System.out.println("Prosess " + this.processId + " forlot CPU");
     }
@@ -189,4 +188,8 @@ public class Process implements Constants
     public void setTimeToNextIoOperation() {
         this.timeToNextIoOperation = (long)((Math.random()*avgIoInterval)*2+1);
     }
+
+	public long getTimeSpentInCpu() {
+		return timeSpentInCpu;
+	}
 }

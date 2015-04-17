@@ -202,14 +202,15 @@ public class Simulator implements Constants
         else {
             //TODO: Fix this shit
             cpu.processNext();
-            p.enteredCpu(clock);
-            p.leftReadyQueue(clock);
-            //p.setTimeOfLastEvent(clock);
+            cpu.getCurrentProcess().leftReadyQueue(clock);
+			cpu.getCurrentProcess().enteredCpu(clock);
+			//p.setTimeOfLastEvent(clock);
             //cpu.setCurrentProcess((Process)cpu.getQueue().removeNext());
             this.eventQueue.insertEvent(createEvent(cpu.getCurrentProcess()));
             this.gui.setCpuActive(cpu.getCurrentProcess());
         }
 
+		statistics.totalCpuTime += p.getTimeSpentInCpu();
 	}
 
 	/**

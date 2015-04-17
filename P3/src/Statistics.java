@@ -33,8 +33,6 @@ public class Statistics
 	public long totIoQueue=0;
 	public long numAddedIoQueue=0;
 
-	public long avgTimeInSystem=0;
-
 	public long avgTimeWaitForMemory=0;
 
 	public long avgTimeWaitForCpu=0;
