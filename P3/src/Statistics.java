@@ -18,16 +18,20 @@ public class Statistics
 
 	public long processSwitches = 0;
 	public long processIO = 0;
-    public long totalIoTime = 0;
+    public long totalIoTime = 0; // DONE
 	public long totalCpuTime = 0;//DONE
 	public long totalSystemTime = totalCpuTime + totalIoTime + totalTimeSpentWaitingForMemory;
 	public long largestMemoryQueue = 0;//DONE
 	public long largestCpuQueue=0; //DONE
-	public long avgCpuQueue=0;
 	public long largestIoQueue=0; //DONE
+
     public long totalTimeSpentWaitingForCpu = 0;
 
-	public long avgIoQueue=0;
+	public long totCpuQueue=0;
+	public long numAddedCpuQueue=0;
+
+	public long totIoQueue=0;
+	public long numAddedIoQueue=0;
 
 	public long avgTimeInSystem=0;
 
@@ -40,6 +44,7 @@ public class Statistics
 	public long avgTimeWaitForIO=0;
 
 	public long avgTimeInIo=0;
+
     public long totalTimeSpentWaitingForIO = 0;
 
 	/**
@@ -73,9 +78,9 @@ public class Statistics
 			System.out.println("Average time spent waiting for memory per process:            "+
 				totalTimeSpentWaitingForMemory/nofCompletedProcesses+" ms");
 		}
-        System.out.println("Largest occuring cpu queue length:                                ");
+        System.out.println("Largest occuring cpu queue length:                                "+largestCpuQueue);
         System.out.println("Average cpu queue length:                                         ");
-        System.out.println("Largest occuring I/O queue length:                                ");
+        System.out.println("Largest occuring I/O queue length:                                "+largestIoQueue);
         System.out.println("Average I/O queue length:                                         ");
 
         System.out.println();
