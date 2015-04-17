@@ -162,6 +162,10 @@ public class Simulator implements Constants
         System.out.println("switchProcess");
         Process p = cpu.getCurrentProcess();
         p.leftCpu(clock);
+
+		statistics.totCpuQueue += cpu.getQueue().getQueueLength();
+		statistics.numAddedCpuQueue++;
+
         p.enteredReadyQueue(clock);
 		//p.setCpuTime(p.getCpuTime() - (clock - p.getTimeOfLastEvent()));
 		cpu.getQueue().insert(p);
@@ -184,6 +188,10 @@ public class Simulator implements Constants
         Process p = cpu.getCurrentProcess();
 		System.out.println("endProcess" + p.getProcessId());
 		p.leftCpu(clock);
+
+		statistics.totCpuQueue += cpu.getQueue().getQueueLength();
+		statistics.numAddedCpuQueue++;
+
 		memory.processCompleted(p);
 		p.updateStatistics(statistics);
 		flushMemoryQueue();
@@ -213,6 +221,10 @@ public class Simulator implements Constants
         System.out.println("processIoRequest");
         Process  p = cpu.getCurrentProcess();
         p.leftCpu(clock);
+
+		statistics.totCpuQueue += cpu.getQueue().getQueueLength();
+		statistics.numAddedCpuQueue++;
+
 		if (io.getCurrentProcess() == null) {
 			io.setCurrentProcess(p);
 			gui.setIoActive(p);
@@ -224,7 +236,6 @@ public class Simulator implements Constants
 			if (io.getQueue().getQueueLength() > statistics.largestIoQueue)
 				statistics.largestIoQueue = io.getQueue().getQueueLength();
 		}
-        p.leftCpu(clock);
 
 		//cpu.processNext();
 		//gui.setCpuActive(cpu.getCurrentProcess());
@@ -248,9 +259,13 @@ public class Simulator implements Constants
 	 */
 	private void endIoOperation() {
         System.out.println("endIoOperation");
-        Process p = io.getCurrentProcess();
-        p.setTimeToNextIoOperation();
+		Process p = io.getCurrentProcess();
+		p.setTimeToNextIoOperation();
         p.leftI0(clock);
+
+		statistics.totIoQueue += io.getQueue().getQueueLength();
+		statistics.numAddedIoQueue++;
+
         p.enteredReadyQueue(clock);
 		cpu.getQueue().insert(p);
 		if (cpu.getQueue().getQueueLength() > statistics.largestCpuQueue)

@@ -150,7 +150,6 @@ public class Process implements Constants
         this.timeSpentInCpu += time;
 		Simulator.statistics.totalCpuTime += time;
 
-
         System.out.println("Prosess " + this.processId + " forlot CPU");
     }
 
