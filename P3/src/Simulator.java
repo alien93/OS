@@ -210,11 +210,24 @@ public class Simulator implements Constants
 			gui.setIoActive(p);
 		} else {
 			io.getQueue().insert(p);
+            p.enteredIoQueue(clock);
 		}
-		eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
-		cpu.processNext();
-		gui.setCpuActive(cpu.getCurrentProcess());
-
+        p.leftCpu(clock);
+        this.eventQueue.insertEvent(createEvent(p));
+		//eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
+		//cpu.processNext();
+		//gui.setCpuActive(cpu.getCurrentProcess());
+        if (this.cpu.getQueue().isEmpty()) {
+            this.cpu.setCurrentProcess(null);
+            this.gui.setCpuActive(null);
+        }
+        else {
+            this.cpu.processNext();
+            this.cpu.getCurrentProcess().enteredCpu(clock);
+            this.eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
+            this.gui.setCpuActive(this.cpu.getCurrentProcess());
+            this.cpu.getCurrentProcess().leftReadyQueue(clock);
+        }
 	}
 
 	/**
@@ -224,8 +237,22 @@ public class Simulator implements Constants
 	private void endIoOperation() {
 		Process p = io.getCurrentProcess();
 		cpu.getQueue().insert(p);
-		eventQueue.insertEvent(createEvent(p));
-		io.processNext();
+        p.setTimeToNextIoOperation();
+        p.leftIoQueue(clock);
+        if (this.io.getQueue().isEmpty()) {
+            this.io.setCurrentProcess(null);
+            this.gui.setIoActive(null);
+        }
+        else {
+            this.io.processNext();
+            this.gui.setIoActive(this.io.getCurrentProcess());
+        }
+        if (this.cpu.getCurrentProcess() == null) {
+            this.cpu.processNext();
+            this.cpu.getCurrentProcess().enteredCpu(clock);
+            eventQueue.insertEvent(createEvent(this.cpu.getCurrentProcess()));
+            this.gui.setCpuActive(this.cpu.getCurrentProcess());
+        }
 	}
 
     private Event createEvent(Process process) {
