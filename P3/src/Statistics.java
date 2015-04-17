@@ -58,10 +58,10 @@ public class Statistics
 
         System.out.println();
         //TODO: add correct fields/values
-        System.out.println(" Total CPU time spent processing:                                 "+cpuProcessing);
-        System.out.println(" Fraction of CPU time spent processing:                           "+(cpuProcessing / simulationLength));
-        System.out.println(" Total CPU time spent waiting:                                    "+cpuWaiting);
-        System.out.println(" Fraction of CPU time spent waiting:                              "+(cpuWaiting / simulationLength));
+        System.out.println(" Total CPU time spent processing:                                 "+totalCpuTime);
+        System.out.println(" Fraction of CPU time spent processing:                           "+(totalCpuTime / simulationLength));
+        System.out.println(" Total CPU time spent waiting:                                    "+(simulationLength - totalCpuTime));
+        System.out.println(" Fraction of CPU time spent waiting:                              "+((simulationLength - totalCpuTime) / simulationLength));
 
         System.out.println();
 
