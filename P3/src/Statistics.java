@@ -15,7 +15,24 @@ public class Statistics
 	public long memoryQueueLengthTime = 0;
 	/** The largest memory queue length that has occured */
 	public long memoryQueueLargestLength = 0;
-    
+
+	public long processSwitches = 0;
+	public long processIO = 0;
+	public long avgThroughput0=0;
+	public long totalCpuTime = 0;
+	public long largestMemoryQueue = 0;
+	public long avgMemoryQueue = 0;
+	public long largestCpuQueue=0;
+	public long avgCpuQueue=0;
+	public long largestIoQueue=0;
+	public long avgIoQueue=0;
+	public long avgTimeInSystem=0;
+	public long avgTimeWaitForMemory=0;
+	public long avgTimeWaitForCpu=0;
+	public long avgTimePerProcess=0;
+	public long avgTimeWaitForIO=0;
+	public long avgTimeInIo=0;
+	
 	/**
 	 * Prints out a report summarizing all collected data about the simulation.
 	 * @param simulationLength	The number of milliseconds that the simulation covered.
