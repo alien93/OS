@@ -150,9 +150,6 @@ public class Simulator implements Constants
                 this.gui.setCpuActive(this.cpu.getCurrentProcess());
             }
 
-			// Update statistics
-			p.updateStatistics(statistics);
-
 			// Check for more free memory
 			p = memory.checkMemory(clock);
 		}
@@ -186,6 +183,7 @@ public class Simulator implements Constants
 		System.out.println("endProcess" + p.getProcessId());
 		p.leftCpu(clock);
 		memory.processCompleted(p);
+		p.updateStatistics(statistics);
 		flushMemoryQueue();
         if (this.cpu.getQueue().isEmpty()) {
             this.cpu.setCurrentProcess(null);
@@ -253,7 +251,7 @@ public class Simulator implements Constants
         else {
             this.io.processNext();
             this.io.getCurrentProcess().leftIoQueue(clock);
-            this.gui.setIoActive(this.io.getCurrentProcess());
+			this.gui.setIoActive(this.io.getCurrentProcess());
 			eventQueue.insertEvent(new Event(END_IO, this.clock + (long) (avgIOTime*2*Math.random())));
         }
         if (this.cpu.getCurrentProcess() == null) {
