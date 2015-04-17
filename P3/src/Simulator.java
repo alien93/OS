@@ -93,7 +93,6 @@ public class Simulator implements Constants
 	 * @param event	The event to be processed.
 	 */
 	private void processEvent(Event event) {
-        System.out.println("Prosesserer EventType: " + event.getType());
         switch (event.getType()) {
 			case NEW_PROCESS:
 				createProcess();
@@ -159,7 +158,6 @@ public class Simulator implements Constants
 	 * Simulates a process switch.
 	 */
 	private void switchProcess() {
-        System.out.println("switchProcess");
         Process p = cpu.getCurrentProcess();
         p.leftCpu(clock);
 
@@ -186,7 +184,6 @@ public class Simulator implements Constants
 	 */
 	private void endProcess() {
         Process p = cpu.getCurrentProcess();
-		System.out.println("endProcess" + p.getProcessId());
 		p.leftCpu(clock);
 
 		statistics.totCpuQueue += cpu.getQueue().getQueueLength();
@@ -223,7 +220,6 @@ public class Simulator implements Constants
 	 */
 	private void processIoRequest() {
         //TODO: Fix processing IO queue
-        System.out.println("processIoRequest");
         Process  p = cpu.getCurrentProcess();
         p.leftCpu(clock);
 
@@ -263,7 +259,6 @@ public class Simulator implements Constants
 	 * is done with its I/O operation.
 	 */
 	private void endIoOperation() {
-        System.out.println("endIoOperation");
 		Process p = io.getCurrentProcess();
 		p.setTimeToNextIoOperation();
         p.leftI0(clock);
@@ -299,9 +294,6 @@ public class Simulator implements Constants
 
     private Event createEvent(Process process) {
         Event event;
-        System.out.println("Genererer event");
-        System.out.println("Tid på CPU: " + process.getCpuTime());
-        System.out.println("Tid til IO: " + process.getTimeToNextIoOperation());
         if (this.maxCpuTime >= process.getTimeToNextIoOperation()) {
             if (process.getCpuTime() > process.getTimeToNextIoOperation()) {
                 event = new Event(IO_REQUEST, this.clock + process.getTimeToNextIoOperation());
@@ -318,8 +310,6 @@ public class Simulator implements Constants
                 event = new Event(END_PROCESS, this.clock + process.getCpuTime());
             }
         }
-        System.out.println("EventType: " + event.getType());
-        System.out.println("Id: " + process.processId + ", Time: " + process.getCpuTime());
         return event;
     }
 
