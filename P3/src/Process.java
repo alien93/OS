@@ -144,10 +144,12 @@ public class Process implements Constants
     public void leftCpu(long clock) {
 		long time = clock - this.enteredCpuTime;
         this.cpuTimeNeeded -= time;
-		if (this.cpuTimeNeeded < 0) this.cpuTimeNeeded = 0;
+		//if (this.cpuTimeNeeded < 0) this.cpuTimeNeeded = 0;
         this.timeToNextIoOperation -= time;
-		if (timeToNextIoOperation < 0) timeToNextIoOperation = 0;
+		//if (timeToNextIoOperation < 0) timeToNextIoOperation = 0;
         this.timeSpentInCpu += time;
+
+		Simulator.statistics.totalCpuTime += time;
 
         System.out.println("Prosess " + this.processId + " forlot CPU");
     }
